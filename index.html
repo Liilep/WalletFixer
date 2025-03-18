@@ -17,17 +17,19 @@ export default function ImageResizer() {
 
     const handleFileChange = (event, key) => {
         const file = event.target.files[0];
-        setFiles({ ...files, [key]: file });
+        if (!file) return;
+        
+        setFiles(prevFiles => ({ ...prevFiles, [key]: file }));
 
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (e) => {
-            setPreviewUrls({ ...previewUrls, [key]: e.target.result });
+            setPreviewUrls(prevUrls => ({ ...prevUrls, [key]: e.target.result }));
         };
     };
 
     const processFiles = () => {
-        let newLinks = [];
+        setDownloadLinks([]); // Rensa gamla länkar
 
         sizes.forEach((size) => {
             const file = files[size.key];
@@ -39,26 +41,20 @@ export default function ImageResizer() {
                 const img = new Image();
                 img.src = e.target.result;
                 img.onload = () => {
-                    resizeImage(img, size.width, size.height, size.name, size.format, newLinks);
+                    resizeImage(img, size.width, size.height, size.name, size.format);
                 };
             };
         });
     };
 
-    const resizeImage = (img, targetWidth, targetHeight, outputName, format, newLinks) => {
+    const resizeImage = (img, targetWidth, targetHeight, outputName, format) => {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
 
         // Behåll proportionerna
-        const aspectRatio = img.width / img.height;
-        let width = targetWidth;
-        let height = targetHeight;
-        
-        if (img.width > img.height) {
-            height = width / aspectRatio;
-        } else {
-            width = height * aspectRatio;
-        }
+        const scale = Math.min(targetWidth / img.width, targetHeight / img.height);
+        const width = img.width * scale;
+        const height = img.height * scale;
 
         canvas.width = width;
         canvas.height = height;
@@ -67,8 +63,7 @@ export default function ImageResizer() {
         canvas.toBlob((blob) => {
             if (!blob) return;
             const url = URL.createObjectURL(blob);
-            newLinks.push({ url, name: outputName });
-            setDownloadLinks([...newLinks]);
+            setDownloadLinks(prevLinks => [...prevLinks, { url, name: outputName }]);
         }, format);
     };
 
@@ -103,18 +98,6 @@ export default function ImageResizer() {
                     </ul>
                 </div>
             )}
-            
-            <div className="mt-12 p-6 bg-gray-900 rounded-xl shadow-lg flex flex-col items-center">
-                <h2 className="text-xl font-semibold mb-4">Apple Wallet Preview</h2>
-                <div className="relative w-[320px] h-[180px] bg-white border border-gray-300 rounded-lg shadow-md p-4">
-                    <div className="absolute top-2 left-2 w-[29px] h-[29px]">
-                        {previewUrls.icon && <img src={previewUrls.icon} alt="Icon" className="w-full h-full object-contain" />}
-                    </div>
-                    <div className="absolute top-2 left-12 w-[100px] h-[50px]">
-                        {previewUrls.logo && <img src={previewUrls.logo} alt="Logo" className="w-full h-full object-contain" />}
-                    </div>
-                </div>
-            </div>
         </div>
     );
 }
