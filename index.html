@@ -120,12 +120,33 @@
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
+                    // Hitta bildens proportioner
+                    const imgWidth = img.width;
+                    const imgHeight = img.height;
+                    let newWidth, newHeight;
+
+                    // Bevara proportionerna
+                    if (imgWidth / imgHeight > width / height) {
+                        newWidth = width;
+                        newHeight = (imgHeight / imgWidth) * width;
+                    } else {
+                        newHeight = height;
+                        newWidth = (imgWidth / imgHeight) * height;
+                    }
+
+                    // Skapa canvas och centrera bilden
                     const canvas = document.createElement("canvas");
                     canvas.width = width;
                     canvas.height = height;
                     const ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
+
+                    // Beräkna positionen för att centrera bilden
+                    const offsetX = (width - newWidth) / 2;
+                    const offsetY = (height - newHeight) / 2;
+
+                    ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
+
+                    // Konvertera canvas till blob och skapa länk
                     canvas.toBlob(blob => {
                         const url = URL.createObjectURL(blob);
                         const link = document.createElement("a");
