@@ -1,111 +1,144 @@
-import { useState } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Wallet Image Resizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+        }
+        .download-list a {
+            display: block;
+            margin: 5px 0;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
 
-export default function ImageResizer() {
-    const sizes = [
-        { key: "icon", name: "icon.png", width: 29, height: 29, format: "image/png" },
-        { key: "icon2x", name: "icon@2x.png", width: 58, height: 58, format: "image/png" },
-        { key: "icon3x", name: "icon@3x.png", width: 87, height: 87, format: "image/png" },
-        { key: "logo", name: "logo.png", width: 100, height: 50, format: "image/png" },
-        { key: "logo2x", name: "logo@2x.png", width: 200, height: 100, format: "image/png" },
-        { key: "logo3x", name: "logo@3x.png", width: 300, height: 150, format: "image/png" },
-    ];
+    <div class="container">
+        <h1>Apple Wallet Image Resizer</h1>
+        <p>Upload your images and get them resized to the correct dimensions for Apple Wallet passes.</p>
 
-    const [files, setFiles] = useState({});
-    const [globalFile, setGlobalFile] = useState(null);
-    const [useGlobal, setUseGlobal] = useState(false);
-    const [downloadLinks, setDownloadLinks] = useState([]);
+        <label>
+            <input type="checkbox" id="useGlobal"> Use one image for all sizes
+        </label>
 
-    const handleFileChange = (event, key) => {
-        const file = event.target.files[0];
-        if (!file) return;
-        
-        setFiles(prevFiles => ({ ...prevFiles, [key]: file }));
-    };
+        <div id="globalUpload">
+            <label>Upload global image:</label>
+            <input type="file" id="globalFile" accept="image/*">
+        </div>
 
-    const handleGlobalFileChange = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-        setGlobalFile(file);
-    };
+        <div id="individualUploads">
+            <label>Upload icon.png:</label>
+            <input type="file" class="file-input" data-key="icon" accept="image/*">
+            <label>Upload icon@2x.png:</label>
+            <input type="file" class="file-input" data-key="icon2x" accept="image/*">
+            <label>Upload icon@3x.png:</label>
+            <input type="file" class="file-input" data-key="icon3x" accept="image/*">
+            <label>Upload logo.png:</label>
+            <input type="file" class="file-input" data-key="logo" accept="image/*">
+            <label>Upload logo@2x.png:</label>
+            <input type="file" class="file-input" data-key="logo2x" accept="image/*">
+            <label>Upload logo@3x.png:</label>
+            <input type="file" class="file-input" data-key="logo3x" accept="image/*">
+        </div>
 
-    const processFiles = () => {
-        setDownloadLinks([]);
-        
-        sizes.forEach((size) => {
-            const file = useGlobal ? globalFile : files[size.key];
-            if (!file) return;
+        <button onclick="processImages()">Upload & Resize</button>
 
+        <div id="downloadLinks" class="download-list"></div>
+    </div>
+
+    <script>
+        const sizes = [
+            { key: "icon", name: "icon.png", width: 29, height: 29 },
+            { key: "icon2x", name: "icon@2x.png", width: 58, height: 58 },
+            { key: "icon3x", name: "icon@3x.png", width: 87, height: 87 },
+            { key: "logo", name: "logo.png", width: 100, height: 50 },
+            { key: "logo2x", name: "logo@2x.png", width: 200, height: 100 },
+            { key: "logo3x", name: "logo@3x.png", width: 300, height: 150 },
+        ];
+
+        document.getElementById("useGlobal").addEventListener("change", function() {
+            document.getElementById("globalUpload").style.display = this.checked ? "block" : "none";
+            document.getElementById("individualUploads").style.display = this.checked ? "none" : "block";
+        });
+
+        function processImages() {
+            const useGlobal = document.getElementById("useGlobal").checked;
+            const globalFile = document.getElementById("globalFile").files[0];
+            const files = {};
+
+            if (useGlobal) {
+                if (!globalFile) {
+                    alert("Please upload a global image.");
+                    return;
+                }
+                sizes.forEach(size => files[size.key] = globalFile);
+            } else {
+                document.querySelectorAll(".file-input").forEach(input => {
+                    if (input.files[0]) {
+                        files[input.dataset.key] = input.files[0];
+                    }
+                });
+            }
+
+            if (Object.keys(files).length === 0) {
+                alert("Please upload at least one image.");
+                return;
+            }
+
+            document.getElementById("downloadLinks").innerHTML = "";
+
+            sizes.forEach(size => {
+                if (files[size.key]) {
+                    resizeImage(files[size.key], size.width, size.height, size.name);
+                }
+            });
+        }
+
+        function resizeImage(file, width, height, name) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload = (e) => {
+            reader.onload = function(e) {
                 const img = new Image();
-                img.onload = () => {
-                    resizeImage(img, size.width, size.height, size.name, size.format);
+                img.onload = function() {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    canvas.toBlob(blob => {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement("a");
+                        link.href = url;
+                        link.download = name;
+                        link.innerText = name;
+                        document.getElementById("downloadLinks").appendChild(link);
+                    }, "image/png");
                 };
                 img.src = e.target.result;
             };
-        });
-    };
+        }
+    </script>
 
-    const resizeImage = (img, targetWidth, targetHeight, outputName, format) => {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        
-        canvas.width = targetWidth;
-        canvas.height = targetHeight;
-        ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
-
-        canvas.toBlob((blob) => {
-            if (!blob) return;
-            const url = URL.createObjectURL(blob);
-            setDownloadLinks(prevLinks => [...prevLinks, { url, name: outputName }]);
-        }, format);
-    };
-
-    return (
-        <div className="min-h-screen bg-gray-100 text-gray-900 font-sans flex flex-col items-center py-10">
-            <h1 className="text-4xl font-semibold mb-6">Apple Wallet Image Resizer</h1>
-            <p className="text-lg opacity-80 mb-8 max-w-2xl text-center">
-                Upload your images and get them resized to the correct dimensions for Apple Wallet passes.
-            </p>
-
-            <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md border border-gray-300 space-y-4">
-                <label className="block font-medium mb-2">
-                    <input type="checkbox" checked={useGlobal} onChange={() => setUseGlobal(!useGlobal)} className="mr-2" />
-                    Use one image for all sizes
-                </label>
-                {useGlobal ? (
-                    <div>
-                        <label className="block font-medium mb-1">Upload global image:</label>
-                        <input type="file" accept="image/*" onChange={handleGlobalFileChange} className="w-full p-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-900" />
-                    </div>
-                ) : (
-                    sizes.map((size) => (
-                        <div key={size.key} className="mb-4">
-                            <label className="block font-medium mb-1">Upload {size.name}:</label>
-                            <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, size.key)} className="w-full p-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-900" />
-                        </div>
-                    ))
-                )}
-                <button onClick={processFiles} className="mt-4 w-full bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg font-medium">
-                    Upload & Resize
-                </button>
-            </div>
-
-            {downloadLinks.length > 0 && (
-                <div className="mt-8 bg-white p-6 rounded-xl shadow-lg w-full max-w-md border border-gray-300">
-                    <h2 className="text-xl font-semibold mb-4">Download Resized Images:</h2>
-                    <ul className="space-y-2">
-                        {downloadLinks.map((file, index) => (
-                            <li key={index} className="mt-2">
-                                <a href={file.url} download={file.name} className="text-blue-600 hover:text-blue-400 underline">
-                                    {file.name}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </div>
-    );
-}
+</body>
+</html>
