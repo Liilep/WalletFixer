@@ -90,10 +90,10 @@
 
     <div class="container">
         <h1>Wallet Bildgenerator</h1>
-        <p>>Ladda upp bilder och få dom i rätt format och namn för Walletbiljetter</p>
+        <p>Ladda upp bilder och få dom i rätt format/namn för Walletbiljetter</p>
 
         <div class="checkbox-container">
-            <label for="useGlobal">Use one image for all sizes</label>
+            <label for="useGlobal">En bild för alla</label>
             <input type="checkbox" id="useGlobal">
         </div>
 
@@ -144,7 +144,7 @@
 
             if (useGlobal) {
                 if (!globalFile) {
-                    alert("Please upload a global image.");
+                    alert("Ladda upp en bild.");
                     return;
                 }
                 sizes.forEach(size => files[size.key] = globalFile);
