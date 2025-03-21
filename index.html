@@ -5,29 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apple Wallet Image Resizer</title>
     <style>
+        /* Grundläggande stilar */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            text-align: center;
-            padding: 20px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #2d2d2d;
+            font-size: 32px;
+            margin-bottom: 15px;
         }
         .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 30px;
         }
-        input, button {
-            margin: 10px 0;
-            padding: 8px;
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #444;
+        }
+        input[type="file"], button {
             width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top: 10px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        input[type="file"]:hover, button:hover {
+            background-color: #e8e8e8;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            font-weight: bold;
+        }
+        button:active {
+            background-color: #0056b3;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+        .download-list {
+            margin-top: 20px;
         }
         .download-list a {
-            display: block;
-            margin: 5px 0;
-            color: blue;
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .download-list a:hover {
+            background-color: #218838;
+        }
+        .checkbox-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .checkbox-container input {
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -35,33 +90,34 @@
 
     <div class="container">
         <h1>Wallet Bildgenerator</h1>
-        <p>Ladda upp bilder och få dom i rätt format och namn för Walletbiljetter</p>
+        <p>>Ladda upp bilder och få dom i rätt format och namn för Walletbiljetter</p>
 
-        <label>
-            <input type="checkbox" id="useGlobal"> Kryssa rutan för att använda en bild för samtliga
-        </label>
+        <div class="checkbox-container">
+            <label for="useGlobal">Use one image for all sizes</label>
+            <input type="checkbox" id="useGlobal">
+        </div>
 
         <div id="globalUpload">
-            <label>Ladda upp en bild för alla</label>
+            <label for="globalFile">Upload global image:</label>
             <input type="file" id="globalFile" accept="image/*">
         </div>
 
         <div id="individualUploads">
-            <label>icon.png:</label>
+            <label for="icon">Upload icon.png:</label>
             <input type="file" class="file-input" data-key="icon" accept="image/*">
-            <label>icon@2x.png:</label>
+            <label for="icon2x">Upload icon@2x.png:</label>
             <input type="file" class="file-input" data-key="icon2x" accept="image/*">
-            <label>icon@3x.png:</label>
+            <label for="icon3x">Upload icon@3x.png:</label>
             <input type="file" class="file-input" data-key="icon3x" accept="image/*">
-            <label>logo.png:</label>
+            <label for="logo">Upload logo.png:</label>
             <input type="file" class="file-input" data-key="logo" accept="image/*">
-            <label>logo@2x.png:</label>
+            <label for="logo2x">Upload logo@2x.png:</label>
             <input type="file" class="file-input" data-key="logo2x" accept="image/*">
-            <label>logo@3x.png:</label>
+            <label for="logo3x">Upload logo@3x.png:</label>
             <input type="file" class="file-input" data-key="logo3x" accept="image/*">
         </div>
 
-        <button onclick="processImages()">Ladda upp och skala om</button>
+        <button onclick="processImages()">Upload & Resize</button>
 
         <div id="downloadLinks" class="download-list"></div>
     </div>
@@ -88,7 +144,7 @@
 
             if (useGlobal) {
                 if (!globalFile) {
-                    alert("Ladda upp en bild.");
+                    alert("Please upload a global image.");
                     return;
                 }
                 sizes.forEach(size => files[size.key] = globalFile);
