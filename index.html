@@ -1,4 +1,3 @@
-// ImageResizer.js
 import { useState } from "react";
 
 export default function ImageResizer() {
@@ -12,7 +11,8 @@ export default function ImageResizer() {
     ];
 
     const [files, setFiles] = useState({});
-    const [previewUrls, setPreviewUrls] = useState({});
+    const [globalFile, setGlobalFile] = useState(null);
+    const [useGlobal, setUseGlobal] = useState(false);
     const [downloadLinks, setDownloadLinks] = useState([]);
 
     const handleFileChange = (event, key) => {
@@ -20,29 +20,29 @@ export default function ImageResizer() {
         if (!file) return;
         
         setFiles(prevFiles => ({ ...prevFiles, [key]: file }));
+    };
 
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (e) => {
-            setPreviewUrls(prevUrls => ({ ...prevUrls, [key]: e.target.result }));
-        };
+    const handleGlobalFileChange = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        setGlobalFile(file);
     };
 
     const processFiles = () => {
-        setDownloadLinks([]); // Rensa gamla länkar
-
+        setDownloadLinks([]);
+        
         sizes.forEach((size) => {
-            const file = files[size.key];
+            const file = useGlobal ? globalFile : files[size.key];
             if (!file) return;
 
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = (e) => {
                 const img = new Image();
-                img.src = e.target.result;
                 img.onload = () => {
                     resizeImage(img, size.width, size.height, size.name, size.format);
                 };
+                img.src = e.target.result;
             };
         });
     };
@@ -50,15 +50,10 @@ export default function ImageResizer() {
     const resizeImage = (img, targetWidth, targetHeight, outputName, format) => {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
-
-        // Behåll proportionerna
-        const scale = Math.min(targetWidth / img.width, targetHeight / img.height);
-        const width = img.width * scale;
-        const height = img.height * scale;
-
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
+        
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
 
         canvas.toBlob((blob) => {
             if (!blob) return;
@@ -74,14 +69,27 @@ export default function ImageResizer() {
                 Upload your images and get them resized to the correct dimensions for Apple Wallet passes.
             </p>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md border border-gray-300">
-                {sizes.map((size) => (
-                    <div key={size.key} className="mb-4">
-                        <label className="block font-medium mb-1">Upload {size.name}:</label>
-                        <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, size.key)} className="w-full p-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-900" />
+            <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md border border-gray-300 space-y-4">
+                <label className="block font-medium mb-2">
+                    <input type="checkbox" checked={useGlobal} onChange={() => setUseGlobal(!useGlobal)} className="mr-2" />
+                    Use one image for all sizes
+                </label>
+                {useGlobal ? (
+                    <div>
+                        <label className="block font-medium mb-1">Upload global image:</label>
+                        <input type="file" accept="image/*" onChange={handleGlobalFileChange} className="w-full p-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-900" />
                     </div>
-                ))}
-                <button onClick={processFiles} className="mt-4 w-full bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg font-medium">Upload & Resize</button>
+                ) : (
+                    sizes.map((size) => (
+                        <div key={size.key} className="mb-4">
+                            <label className="block font-medium mb-1">Upload {size.name}:</label>
+                            <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, size.key)} className="w-full p-2 bg-gray-200 border border-gray-400 rounded-lg text-gray-900" />
+                        </div>
+                    ))
+                )}
+                <button onClick={processFiles} className="mt-4 w-full bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-lg font-medium">
+                    Upload & Resize
+                </button>
             </div>
 
             {downloadLinks.length > 0 && (
