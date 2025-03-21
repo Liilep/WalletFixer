@@ -34,15 +34,15 @@
 <body>
 
     <div class="container">
-        <h1>Tickster Wallet Bildgenerator</h1>
+        <h1>Wallet Bildgenerator</h1>
         <p>Ladda upp bilder och få dom i rätt format och namn för Walletbiljetter</p>
 
         <label>
-            <input type="checkbox" id="useGlobal"> Använd upp en bild för alla logos/icons.
+            <input type="checkbox" id="useGlobal"> Kryssa rutan för att använda en bild för samtliga
         </label>
 
         <div id="globalUpload">
-            <label>Upload global image:</label>
+            <label>Ladda upp en bild för alla</label>
             <input type="file" id="globalFile" accept="image/*">
         </div>
 
@@ -61,7 +61,7 @@
             <input type="file" class="file-input" data-key="logo3x" accept="image/*">
         </div>
 
-        <button onclick="processImages()">Upload & Resize</button>
+        <button onclick="processImages()">Ladda upp och skala om</button>
 
         <div id="downloadLinks" class="download-list"></div>
     </div>
@@ -88,7 +88,7 @@
 
             if (useGlobal) {
                 if (!globalFile) {
-                    alert("Please upload a global image.");
+                    alert("Ladda upp en bild.");
                     return;
                 }
                 sizes.forEach(size => files[size.key] = globalFile);
