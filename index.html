@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E6BYGDHEZ9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E6BYGDHEZ9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'G-E6BYGDHEZ9');
-</script>
+      gtag('config', 'G-E6BYGDHEZ9');
+    </script>
     <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-KKPQ9SDX');</script>
-<!-- End Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KKPQ9SDX');</script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apple Wallet Image Resizer</title>
@@ -104,9 +104,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKPQ9SDX"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKPQ9SDX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <div class="container">
         <h1>August's Wallet Bildgenerator</h1>
@@ -162,16 +162,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             const globalFile = document.getElementById("globalFile").files[0];
             const files = {};
 
+            // Samla alla uppladdade originalfilnamn
+            const uploadedFileNames = [];
+
             if (useGlobal) {
                 if (!globalFile) {
                     alert("Ladda upp en bild.");
                     return;
                 }
                 sizes.forEach(size => files[size.key] = globalFile);
+                uploadedFileNames.push(globalFile.name);
             } else {
                 document.querySelectorAll(".file-input").forEach(input => {
                     if (input.files[0]) {
                         files[input.dataset.key] = input.files[0];
+                        uploadedFileNames.push(input.files[0].name);
                     }
                 });
             }
@@ -179,6 +184,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             if (Object.keys(files).length === 0) {
                 alert("Ladda upp minst en bild.");
                 return;
+            }
+
+            // GTM tracking: fil-UPPLADDNING
+            if (window.dataLayer) {
+                window.dataLayer.push({
+                    event: "walletfixer_upload",
+                    use_global: useGlobal,
+                    files_count: Object.keys(files).length,
+                    uploaded_file_names: uploadedFileNames.join(",")
+                });
             }
 
             document.getElementById("downloadLinks").innerHTML = "";
@@ -196,12 +211,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
-                    // Hitta bildens proportioner
                     const imgWidth = img.width;
                     const imgHeight = img.height;
                     let newWidth, newHeight;
 
-                    // Bevara proportionerna
                     if (imgWidth / imgHeight > width / height) {
                         newWidth = width;
                         newHeight = (imgHeight / imgWidth) * width;
@@ -210,25 +223,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         newWidth = (imgWidth / imgHeight) * height;
                     }
 
-                    // Skapa canvas och centrera bilden
                     const canvas = document.createElement("canvas");
                     canvas.width = width;
                     canvas.height = height;
                     const ctx = canvas.getContext("2d");
 
-                    // Beräkna positionen för att centrera bilden
                     const offsetX = (width - newWidth) / 2;
                     const offsetY = (height - newHeight) / 2;
 
                     ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
 
-                    // Konvertera canvas till blob och skapa länk
                     canvas.toBlob(blob => {
                         const url = URL.createObjectURL(blob);
                         const link = document.createElement("a");
                         link.href = url;
                         link.download = name;
                         link.innerText = name;
+
+                        // GTM tracking: fil-NEDLADDNING när användaren klickar
+                        link.addEventListener("click", function() {
+                            if (window.dataLayer) {
+                                window.dataLayer.push({
+                                    event: "walletfixer_download",
+                                    file_name: name,
+                                    width: width,
+                                    height: height
+                                });
+                            }
+                        });
+
                         document.getElementById("downloadLinks").appendChild(link);
                     }, "image/png");
                 };
