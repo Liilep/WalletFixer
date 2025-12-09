@@ -242,6 +242,9 @@
 
         .asset-actions {
             margin-top: 0.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
         }
 
         .asset-actions a {
@@ -263,14 +266,27 @@
 
         /* --- Wallet previews --- */
 
-        .preview-grid {
+        /* Ny layout: allt samlat i en tvåspalt (desktop) */
+        .preview-layout {
+            display: grid;
+            grid-template-columns: minmax(260px, 1.4fr) minmax(220px, 1fr);
+            gap: 1.5rem;
+            align-items: flex-start;
+            margin-top: 0.9rem;
+        }
+
+        .preview-main {
+            /* full biljett */
+        }
+
+        .preview-side {
             display: flex;
-            justify-content: center;
-            margin-top: 0.75rem;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .wallet-preview-wrapper {
-            max-width: 360px;
+            max-width: 100%;
             width: 100%;
         }
 
@@ -421,16 +437,6 @@
             margin-top: 0.8rem;
         }
 
-        /* --- Extra vyer: listvy, watch, låsskärm --- */
-
-        .extra-previews {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.4rem;
-            margin-top: 1.4rem;
-            align-items: flex-start;
-        }
-
         .mini-caption-title {
             font-size: 0.8rem;
             font-weight: 600;
@@ -441,12 +447,12 @@
             font-size: 0.78rem;
             color: var(--muted);
             margin-top: 0.35rem;
-            max-width: 260px;
         }
 
         /* Wallet-listvy */
         .wallet-listcell {
-            width: 260px;
+            width: 100%;
+            max-width: 260px;
             border-radius: 0.9rem;
             background: #111827;
             padding: 0.55rem 0.7rem;
@@ -489,7 +495,8 @@
 
         /* Apple Watch-vy */
         .watch-preview {
-            width: 160px;
+            width: 100%;
+            max-width: 160px;
             height: 200px;
             border-radius: 1.9rem;
             padding: 0.5rem;
@@ -585,7 +592,8 @@
 
         /* Låsskärm-vy */
         .lockscreen-phone {
-            width: 210px;
+            width: 100%;
+            max-width: 210px;
             aspect-ratio: 9 / 19.5;
             border-radius: 2rem;
             padding: 0.7rem;
@@ -655,13 +663,25 @@
             color: transparent;
         }
 
+        @media (max-width: 900px) {
+            .preview-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-side {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .preview-side > div {
+                flex: 1 1 160px;
+            }
+        }
+
         @media (max-width: 640px) {
             .card {
                 padding: 1.2rem 1.1rem;
-            }
-
-            .wallet-preview-wrapper {
-                max-width: 100%;
             }
         }
     </style>
@@ -742,12 +762,17 @@
             </div>
 
             <div class="field-group">
-                <div class="row" style="align-items:center;">
+                <div class="row" style="align-items:center; gap:0.6rem;">
                     <div class="col" style="flex:0 0 auto;">
                         <button id="processBtn" type="button">Skala om &amp; skapa filer</button>
                     </div>
                     <div class="col" style="flex:0 0 auto;">
                         <button id="resetBtn" type="button" class="btn-secondary">Rensa resultat</button>
+                    </div>
+                    <div class="col" style="flex:0 0 auto;">
+                        <button id="downloadAllBtn" type="button" class="btn-green" disabled>
+                            Ladda ner alla som ZIP
+                        </button>
                     </div>
                 </div>
                 <div id="statusText" class="status status--info"></div>
@@ -760,145 +785,145 @@
         <section class="card">
             <h2><span class="badge">2</span> Förhandsvisning – samma biljett i olika vyer</h2>
             <p class="help">
-                Layouten nedan försöker spegla en klassisk eventbiljett i Wallet: vit bakgrund, logga uppe till vänster,
-                två kolumner med rubriker i rosa versaler och text i mörk blå, samt QR-kod i en egen ruta nederst.
-                När du skalar om bilderna uppdateras förhandsvisningen automatiskt.
+                Layouten nedan försöker spegla en klassisk eventbiljett i Wallet <strong> DETTA SKA TAS MED EN GRÄVSKOPA SALT</strong>
             </p>
 
-            <!-- Full Wallet-biljettvy -->
-            <div class="preview-grid">
-                <div class="wallet-preview-wrapper">
-                    <div class="wallet-preview-label">Wallet – biljettvy (full vy)</div>
-                    <div class="wallet-preview">
-                        <div class="wallet-inner">
-                            <div class="ticket-header">
-                                <div class="ticket-logo" data-slot="logo"></div>
-                            </div>
-
-                            <div class="ticket-section">
-                                <div class="ticket-label">Event</div>
-                                <div class="ticket-value ticket-value-lg">
-                                    Rockieli-plock
+            <div class="preview-layout">
+                <!-- Vänster: full biljettvy -->
+                <div class="preview-main">
+                    <div class="wallet-preview-wrapper">
+                        <div class="wallet-preview-label">Wallet – biljettvy (full vy)</div>
+                        <div class="wallet-preview">
+                            <div class="wallet-inner">
+                                <div class="ticket-header">
+                                    <div class="ticket-logo" data-slot="logo"></div>
                                 </div>
-                            </div>
 
-                            <div class="ticket-grid">
-                                <div class="ticket-col">
-                                    <div class="ticket-field">
-                                        <div class="ticket-label">Section</div>
-                                        <div class="ticket-value">Första parkett</div>
-                                    </div>
-                                    <div class="ticket-field">
-                                        <div class="ticket-label">Ticket</div>
-                                        <div class="ticket-value">Ordinarie parkett</div>
-                                    </div>
-                                    <div class="ticket-field">
-                                        <div class="ticket-label">Where</div>
-                                        <div class="ticket-value">Stora Scen</div>
+                                <div class="ticket-section">
+                                    <div class="ticket-label">Event</div>
+                                    <div class="ticket-value ticket-value-lg">
+                                        Rockeli-Plock
                                     </div>
                                 </div>
-                                <div class="ticket-col">
-                                    <div class="ticket-field">
-                                        <div class="ticket-label">Entry via</div>
-                                        <div class="ticket-value">Höger</div>
+
+                                <div class="ticket-grid">
+                                    <div class="ticket-col">
+                                        <div class="ticket-field">
+                                            <div class="ticket-label">Section</div>
+                                            <div class="ticket-value">Första parkett</div>
+                                        </div>
+                                        <div class="ticket-field">
+                                            <div class="ticket-label">Ticket</div>
+                                            <div class="ticket-value">Ordinarie parkett</div>
+                                        </div>
+                                        <div class="ticket-field">
+                                            <div class="ticket-label">Where</div>
+                                            <div class="ticket-value">Stora Scen</div>
+                                        </div>
                                     </div>
-                                    <div class="ticket-field">
-                                        <div class="ticket-label">Row</div>
-                                        <div class="ticket-value">13</div>
-                                    </div>
-                                    <div class="ticket-field">
-                                        <div class="ticket-label">Seat</div>
-                                        <div class="ticket-value">1326</div>
-                                    </div>
-                                    <div class="ticket-field">
-                                        <div class="ticket-label">Starts</div>
-                                        <div class="ticket-value">26 sep. 2025 19:30</div>
-                                    </div>
-                                    <div class="ticket-field">
-                                        <div class="ticket-label">Entry</div>
-                                        <div class="ticket-value">18:00</div>
+                                    <div class="ticket-col">
+                                        <div class="ticket-field">
+                                            <div class="ticket-label">Entry via</div>
+                                            <div class="ticket-value">Höger</div>
+                                        </div>
+                                        <div class="ticket-field">
+                                            <div class="ticket-label">Row</div>
+                                            <div class="ticket-value">13</div>
+                                        </div>
+                                        <div class="ticket-field">
+                                            <div class="ticket-label">Seat</div>
+                                            <div class="ticket-value">1326</div>
+                                        </div>
+                                        <div class="ticket-field">
+                                            <div class="ticket-label">Starts</div>
+                                            <div class="ticket-value">26 sep. 2025 19:30</div>
+                                        </div>
+                                        <div class="ticket-field">
+                                            <div class="ticket-label">Entry</div>
+                                            <div class="ticket-value">18:00</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="ticket-qr-area">
-                                <div class="ticket-qr-box"></div>
-                                <div class="ticket-qr-caption">XXXXXXXXX</div>
+                                <div class="ticket-qr-area">
+                                    <div class="ticket-qr-box"></div>
+                                    <div class="ticket-qr-caption">den här kupongen har gått ut</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Extra vyer: lista, watch, låsskärm -->
-            <div class="extra-previews">
-                <!-- Wallet-listvy -->
-                <div>
-                    <div class="mini-caption-title">Wallet – listvy</div>
-                    <div class="wallet-listcell">
-                        <div class="wallet-list-icon" data-slot="list-icon">A</div>
-                        <div>
-                            <div class="wallet-list-text-main">Rockieli-plock</div>
-                            <div class="wallet-list-text-sub">Eventbyrån • Stora Scen</div>
-                        </div>
-                    </div>
-                    <div class="mini-caption">
-                        Visar hur <code>icon.png</code> kan se ut i biljettslistan tillsammans med titel och plats.
-                    </div>
-                </div>
-
-                <!-- Apple Watch -->
-                <div>
-                    <div class="mini-caption-title">Apple Watch – biljettvy</div>
-                    <div class="watch-preview">
-                        <div class="watch-inner">
-                            <div class="watch-header">
-                                <div class="watch-icon" data-slot="watch-icon">A</div>
-                                <div class="watch-title">Rockieli-plock</div>
-                            </div>
-                            <div class="watch-logo-strip">
-                                <div class="watch-logo" data-slot="watch-logo"></div>
-                                <div style="flex:1;height:8px;border-radius:999px;background:#e5e7eb;"></div>
-                            </div>
-                            <div class="watch-field-line">
-                                <span>Starts</span><span>19:30</span>
-                            </div>
-                            <div class="watch-field-line">
-                                <span>Row</span><span>13</span>
-                            </div>
-                            <div class="watch-field-line">
-                                <span>Seat</span><span>1326</span>
-                            </div>
-                            <div class="watch-barcode"></div>
-                        </div>
-                    </div>
-                    <div class="mini-caption">
-                        Förenklad Watch-vy där samma logga och ikon används i ett kompakt format.
-                    </div>
-                </div>
-
-                <!-- Låsskärm -->
-                <div>
-                    <div class="mini-caption-title">iPhone – låsskärm</div>
-                    <div class="lockscreen-phone">
-                        <div class="lockscreen-inner">
+                <!-- Höger: listvy, watch, låsskärm samlat -->
+                <div class="preview-side">
+                    <!-- Wallet-listvy -->
+                    <div>
+                        <div class="mini-caption-title">Wallet – listvy</div>
+                        <div class="wallet-listcell">
+                            <div class="wallet-list-icon" data-slot="list-icon">A</div>
                             <div>
-                                <div class="lockscreen-statusbar">
-                                    <span>Fre 26 sep</span><span>🔋 100%</span>
-                                </div>
-                                <div class="lockscreen-time">19:10</div>
+                                <div class="wallet-list-text-main">Rockeli-Plock</div>
+                                <div class="wallet-list-text-sub">Eventbyrån • Stora Scen</div>
                             </div>
-                            <div class="lockscreen-notification">
-                                <div class="lockscreen-icon" data-slot="lockscreen-icon">A</div>
+                        </div>
+                        <div class="mini-caption">
+                            Visar hur <code>icon.png</code> kan se ut i biljettslistan tillsammans med titel och plats.
+                        </div>
+                    </div>
+
+                    <!-- Apple Watch -->
+                    <div>
+                        <div class="mini-caption-title">Apple Watch – biljettvy</div>
+                        <div class="watch-preview">
+                            <div class="watch-inner">
+                                <div class="watch-header">
+                                    <div class="watch-icon" data-slot="watch-icon">A</div>
+                                    <div class="watch-title">Rockeli-Plock</div>
+                                </div>
+                                <div class="watch-logo-strip">
+                                    <div class="watch-logo" data-slot="watch-logo"></div>
+                                    <div style="flex:1;height:8px;border-radius:999px;background:#e5e7eb;"></div>
+                                </div>
+                                <div class="watch-field-line">
+                                    <span>Starts</span><span>19:30</span>
+                                </div>
+                                <div class="watch-field-line">
+                                    <span>Row</span><span>13</span>
+                                </div>
+                                <div class="watch-field-line">
+                                    <span>Seat</span><span>1326</span>
+                                </div>
+                                <div class="watch-barcode"></div>
+                            </div>
+                        </div>
+                        <div class="mini-caption">
+                            Förenklad Watch-vy där samma logga och ikon används i ett kompakt format.
+                        </div>
+                    </div>
+
+                    <!-- Låsskärm -->
+                    <div>
+                        <div class="mini-caption-title">iPhone – låsskärm</div>
+                        <div class="lockscreen-phone">
+                            <div class="lockscreen-inner">
                                 <div>
-                                    <div style="font-size:0.78rem;font-weight:600;">Biljett är relevant</div>
-                                    <div style="font-size:0.7rem;color:#9ca3af;">Rockieli-plock • Stora Scen</div>
+                                    <div class="lockscreen-statusbar">
+                                        <span>Fre 26 sep</span><span>🔋 100%</span>
+                                    </div>
+                                    <div class="lockscreen-time">19:10</div>
+                                </div>
+                                <div class="lockscreen-notification">
+                                    <div class="lockscreen-icon" data-slot="lockscreen-icon">A</div>
+                                    <div>
+                                        <div style="font-size:0.78rem;font-weight:600;">Biljett är relevant</div>
+                                        <div style="font-size:0.7rem;color:#9ca3af;">Rockeli-Plock • Stora Scen</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mini-caption">
-                        “Låtsas-lockscreen” där du kan se hur <code>icon.png</code> funkar superlitet i en notis.
+                        <div class="mini-caption">
+                            “Låtsas-lockscreen” där du kan se hur <code>icon.png</code> funkar superlitet i en notis.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -910,6 +935,9 @@
             </p>
         </section>
     </div>
+
+    <!-- JSZip för ZIP-nedladdning -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <script>
         // --- Storlekar (som i ditt original) ---
@@ -927,6 +955,7 @@
         const individualUploads = document.getElementById("individualUploads");
         const processBtn = document.getElementById("processBtn");
         const resetBtn = document.getElementById("resetBtn");
+        const downloadAllBtn = document.getElementById("downloadAllBtn");
         const statusText = document.getElementById("statusText");
         const downloadLinksEl = document.getElementById("downloadLinks");
 
@@ -935,6 +964,9 @@
             icon: null,
             logo: null
         };
+
+        // Håller färdiga filer för "Ladda ner alla"
+        const generatedFiles = []; // {name, blob}
 
         function setStatus(message, type = "info") {
             statusText.textContent = message || "";
@@ -947,6 +979,10 @@
             individualUploads.style.display = useGlobal ? "none" : "block";
         }
 
+        function updateDownloadAllState() {
+            downloadAllBtn.disabled = generatedFiles.length === 0;
+        }
+
         useGlobalCheckbox.addEventListener("change", updateUploadMode);
 
         resetBtn.addEventListener("click", () => {
@@ -957,9 +993,56 @@
             previewState.icon = null;
             previewState.logo = null;
             resetPreviewImages();
+
+            // Nollställ genererade filer
+            generatedFiles.length = 0;
+            updateDownloadAllState();
         });
 
         processBtn.addEventListener("click", processImages);
+
+        downloadAllBtn.addEventListener("click", async () => {
+            if (generatedFiles.length === 0) return;
+
+            if (typeof JSZip === "undefined") {
+                alert("Kunde inte ladda zip-biblioteket (JSZip).");
+                return;
+            }
+
+            try {
+                setStatus("Skapar ZIP-fil...", "info");
+                downloadAllBtn.disabled = true;
+
+                const zip = new JSZip();
+                generatedFiles.forEach(f => {
+                    zip.file(f.name, f.blob);
+                });
+
+                const zipBlob = await zip.generateAsync({ type: "blob" });
+                const url = URL.createObjectURL(zipBlob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "wallet-bilder.zip";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                setStatus("ZIP-fil nedladdad.", "ok");
+
+                if (window.dataLayer) {
+                    window.dataLayer.push({
+                        event: "walletfixer_download_all",
+                        files_count: generatedFiles.length
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                setStatus("Kunde inte skapa ZIP-fil.", "error");
+            } finally {
+                updateDownloadAllState();
+            }
+        });
 
         function processImages() {
             const useGlobal = useGlobalCheckbox.checked;
@@ -1006,6 +1089,10 @@
             setStatus("Skalar om bilder...", "info");
             processBtn.disabled = true;
 
+            // Rensa tidigare genererade filer
+            generatedFiles.length = 0;
+            updateDownloadAllState();
+
             let processedCount = 0;
             let targetCount = 0;
 
@@ -1017,6 +1104,7 @@
                         if (processedCount === targetCount) {
                             setStatus("Klar! " + processedCount + " filer skapade.", "ok");
                             processBtn.disabled = false;
+                            updateDownloadAllState();
                         }
                     });
                 }
@@ -1061,10 +1149,18 @@
                     const dataUrl = canvas.toDataURL("image/png");
                     updatePreviewFromAsset(size.key, dataUrl);
 
-                    // Blob för nedladdning
+                    // Blob för nedladdning + ZIP
                     canvas.toBlob(blob => {
-                        const url = URL.createObjectURL(blob);
-                        addDownloadItem(size, url);
+                        if (!blob) {
+                            if (typeof onDone === "function") onDone();
+                            return;
+                        }
+
+                        // Spara för "Ladda ner alla"
+                        generatedFiles.push({ name: size.name, blob });
+
+                        // Skapa nedladdningskort
+                        addDownloadItem(size, blob);
 
                         // GTM tracking sker vid klick i länken
 
@@ -1075,7 +1171,7 @@
             };
         }
 
-        function addDownloadItem(size, url) {
+        function addDownloadItem(size, blob) {
             const item = document.createElement("div");
             item.className = "asset-item";
 
@@ -1095,6 +1191,8 @@
 
             const actions = document.createElement("div");
             actions.className = "asset-actions";
+
+            const url = URL.createObjectURL(blob);
 
             const link = document.createElement("a");
             link.href = url;
@@ -1207,6 +1305,7 @@
             updateUploadMode();
             setStatus("Redo. Ladda upp en bild och klicka på \"Skala om & skapa filer\".", "info");
             resetPreviewImages();
+            updateDownloadAllState();
         });
     </script>
 </body>
