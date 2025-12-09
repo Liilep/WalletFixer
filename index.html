@@ -30,7 +30,9 @@
             --orange: #f97316;
             --border: #d1d5db;
             --bg: #f3f4f6;
-            --text: #111827;
+            --text: #0b2a3a;
+            --accent-pink: #ec4d71;
+            --muted: #6b7280;
         }
 
         * {
@@ -115,7 +117,7 @@
 
         .help {
             font-size: 0.8rem;
-            color: #6b7280;
+            color: var(--muted);
             margin-top: 0.2rem;
         }
 
@@ -259,32 +261,37 @@
             background: #ea580c;
         }
 
-        /* Wallet previews */
+        /* --- Wallet previews --- */
+
         .preview-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1rem;
+            display: flex;
+            justify-content: center;
             margin-top: 0.75rem;
         }
 
+        .wallet-preview-wrapper {
+            max-width: 360px;
+            width: 100%;
+        }
+
+        .wallet-preview-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            color: var(--muted);
+        }
+
         .wallet-preview {
-            border-radius: 1rem;
-            background: linear-gradient(135deg, #4f46e5, #0ea5e9);
-            padding: 0.65rem 0.75rem 0.9rem;
-            color: #f9fafb;
-            box-shadow: 0 6px 20px rgba(15,23,42,0.35);
+            border-radius: 1.1rem;
+            background: #ffffff;
+            padding: 1.0rem 1.2rem 1.15rem;
+            color: var(--text);
+            box-shadow:
+                0 0 0 1px rgba(15,23,42,0.04),
+                0 8px 22px rgba(15,23,42,0.18);
             position: relative;
             overflow: hidden;
             font-size: 0.8rem;
-        }
-
-        .wallet-preview::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 50%);
-            opacity: 0.7;
-            pointer-events: none;
         }
 
         .wallet-inner {
@@ -292,153 +299,155 @@
             z-index: 1;
         }
 
-        .wallet-top {
+        .ticket-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start; /* logga vänster */
             align-items: center;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.8rem;
+            margin-top: 0.2rem;
         }
 
-        .wallet-type-pill {
-            padding: 0.1rem 0.5rem;
-            border-radius: 999px;
-            background: rgba(15,23,42,0.35);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .wallet-icon-circle {
-            width: 26px;
-            height: 26px;
-            border-radius: 999px;
-            background: rgba(15,23,42,0.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .wallet-icon-circle span {
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .wallet-icon-circle.has-image {
-            background-size: cover;
-            background-position: center;
-            background-color: #111827;
-        }
-
-        .wallet-logo-strip {
-            margin-bottom: 0.5rem;
-            border-radius: 0.55rem;
-            background: rgba(15,23,42,0.38);
-            padding: 0.35rem 0.55rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            overflow: hidden;
-        }
-
-        .wallet-logo {
-            width: 90px;
-            height: 28px;
-            border-radius: 0.35rem;
-            background: rgba(15,23,42,0.75);
-            overflow: hidden;
-            background-position: center;
+        .ticket-logo {
+            width: 160px;
+            max-width: 190px;
+            height: 48px;
+            border-radius: 0.5rem;
+            background: #f1f5f9;
+            background-position: left center;
             background-size: contain;
             background-repeat: no-repeat;
-            flex-shrink: 0;
         }
 
-        .wallet-strip {
-            flex: 1;
-            height: 26px;
-            border-radius: 0.35rem;
-            background: linear-gradient(90deg, rgba(255,255,255,0.22), rgba(255,255,255,0.05));
-            opacity: 0.9;
+        .ticket-section {
+            margin-bottom: 0.75rem;
         }
 
-        .wallet-main {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.6rem;
+        .ticket-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent-pink);
+            margin-bottom: 0.12rem;
         }
 
-        .wallet-fields {
-            flex: 1;
+        .ticket-value {
+            font-size: 0.82rem;
+            color: var(--text);
         }
 
-        .wallet-line-strong {
+        .ticket-value-lg {
+            font-size: 1.0rem;
             font-weight: 600;
-            font-size: 0.85rem;
+            line-height: 1.25;
         }
 
-        .wallet-line-muted {
-            font-size: 0.78rem;
-            opacity: 0.9;
+        .ticket-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 1.5rem;
+            row-gap: 0.6rem;
+            margin-bottom: 0.9rem;
         }
 
-        .wallet-thumb {
-            width: 42px;
-            height: 42px;
-            border-radius: 0.4rem;
-            background: rgba(15,23,42,0.4);
-            flex-shrink: 0;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
-        .wallet-bottom {
+        .ticket-col {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .ticket-field {
+            padding-bottom: 0.35rem;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .ticket-field:last-child {
+            border-bottom: none;
+        }
+
+        .ticket-qr-area {
+            margin-top: 0.5rem;
+            padding-top: 0.7rem;
+            border-top: 1px solid #edf1f5;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-top: 0.55rem;
+            gap: 0.4rem;
         }
 
-        .wallet-barcode {
-            flex: 1;
-            height: 14px;
-            border-radius: 99px;
-            background-image: repeating-linear-gradient(
-                to right,
-                rgba(15,23,42,0.7) 0,
-                rgba(15,23,42,0.7) 4px,
-                transparent 4px,
-                transparent 7px
-            );
-            opacity: 0.9;
+        .ticket-qr-box {
+            width: 42%;
+            min-width: 135px;
+            aspect-ratio: 1 / 1;
+            border-radius: 0.9rem;
+            background-color: #ffffff;
+            box-shadow:
+                0 0 0 1px #e5e7eb,
+                0 4px 14px rgba(15,23,42,0.15);
+            position: relative;
+            overflow: hidden;
         }
 
-        .wallet-chip {
-            margin-left: 0.5rem;
-            padding: 0.1rem 0.5rem;
-            border-radius: 999px;
-            background: rgba(15,23,42,0.4);
-            font-size: 0.7rem;
+        .ticket-qr-box::before {
+            content: "";
+            position: absolute;
+            inset: 16%;
+            background:
+                repeating-linear-gradient(
+                    to right,
+                    #000 0,
+                    #000 2px,
+                    transparent 2px,
+                    transparent 4px
+                ),
+                repeating-linear-gradient(
+                    to bottom,
+                    #000 0,
+                    #000 2px,
+                    transparent 2px,
+                    transparent 4px
+                );
+            opacity: 0.88;
+        }
+
+        .ticket-qr-caption {
+            font-size: 0.72rem;
+            color: #9ca3af;
+            text-align: center;
         }
 
         .preview-note {
             font-size: 0.8rem;
-            color: #6b7280;
-            margin-top: 0.4rem;
+            color: var(--muted);
+            margin-top: 0.8rem;
         }
 
         /* --- Extra vyer: listvy, watch, låsskärm --- */
+
         .extra-previews {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.2rem;
-            margin-top: 1.5rem;
+            gap: 1.4rem;
+            margin-top: 1.4rem;
             align-items: flex-start;
         }
 
+        .mini-caption-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .mini-caption {
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-top: 0.35rem;
+            max-width: 260px;
+        }
+
+        /* Wallet-listvy */
         .wallet-listcell {
             width: 260px;
-            border-radius: 0.85rem;
+            border-radius: 0.9rem;
             background: #111827;
             padding: 0.55rem 0.7rem;
             display: flex;
@@ -478,6 +487,7 @@
             color: #9ca3af;
         }
 
+        /* Apple Watch-vy */
         .watch-preview {
             width: 160px;
             height: 200px;
@@ -495,10 +505,11 @@
             height: 100%;
             border-radius: 1.5rem;
             padding: 0.5rem;
-            background: linear-gradient(135deg, rgba(148,163,184,0.3), rgba(15,23,42,0.95));
+            background: linear-gradient(135deg, rgba(248,250,252,0.96), rgba(226,232,240,0.96));
             display: flex;
             flex-direction: column;
             gap: 0.35rem;
+            color: var(--text);
         }
 
         .watch-header {
@@ -511,7 +522,7 @@
             width: 20px;
             height: 20px;
             border-radius: 0.6rem;
-            background: #0f172a;
+            background: #e5e7eb;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -527,10 +538,15 @@
             color: transparent;
         }
 
+        .watch-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
         .watch-logo-strip {
-            margin-top: 0.2rem;
+            margin-top: 0.25rem;
             border-radius: 0.5rem;
-            background: rgba(15,23,42,0.75);
+            background: #f1f5f9;
             padding: 0.3rem 0.4rem;
             display: flex;
             align-items: center;
@@ -541,7 +557,7 @@
             width: 60px;
             height: 18px;
             border-radius: 0.3rem;
-            background: rgba(15,23,42,0.9);
+            background: #e5e7eb;
             background-position: center;
             background-size: contain;
             background-repeat: no-repeat;
@@ -567,6 +583,7 @@
             );
         }
 
+        /* Låsskärm-vy */
         .lockscreen-phone {
             width: 210px;
             aspect-ratio: 9 / 19.5;
@@ -608,7 +625,7 @@
 
         .lockscreen-notification {
             margin-top: auto;
-            background: rgba(15,23,42,0.85);
+            background: rgba(15,23,42,0.88);
             border-radius: 1.1rem;
             padding: 0.5rem 0.55rem;
             display: flex;
@@ -638,16 +655,13 @@
             color: transparent;
         }
 
-        .mini-caption {
-            font-size: 0.8rem;
-            color: #6b7280;
-            margin-top: 0.35rem;
-            max-width: 260px;
-        }
-
         @media (max-width: 640px) {
             .card {
                 padding: 1.2rem 1.1rem;
+            }
+
+            .wallet-preview-wrapper {
+                max-width: 100%;
             }
         }
     </style>
@@ -662,7 +676,8 @@
         <h1>Augusts Wallet-bildverktyg</h1>
         <p class="lead">
             Ladda upp en eller flera bilder och få ut färdiga <strong>icon</strong> &amp; <strong>logo</strong>-filer
-            i rätt storlek/namn – plus förhandsvisningar av hur de kan se ut i olika Wallet-vyer (full vy, lista, Apple Watch och låsskärm).
+            i rätt storlek/namn – plus förhandsvisningar av hur samma biljett kan se ut i olika Wallet-vyer
+            (full biljett, lista, Apple Watch och låsskärm).
         </p>
 
         <!-- STEG 1: UPPLADDNING & SKALNING -->
@@ -743,164 +758,155 @@
 
         <!-- STEG 2: FÖRHANDSVISNING -->
         <section class="card">
-            <h2><span class="badge">2</span> Förhandsvisning – ungefär hur det kan se ut</h2>
+            <h2><span class="badge">2</span> Förhandsvisning – samma biljett i olika vyer</h2>
             <p class="help">
-                Det här är inte en exakt 1:1-rendering av Wallet, men ger en känsla för hur din
-                <strong>icon</strong> och <strong>logo</strong> hamnar i olika passtyper och vyer
-                (kupong, eventbiljett, medlemskort, listvy, Apple Watch, låsskärm).
+                Layouten nedan försöker spegla en klassisk eventbiljett i Wallet: vit bakgrund, logga uppe till vänster,
+                två kolumner med rubriker i rosa versaler och text i mörk blå, samt QR-kod i en egen ruta nederst.
+                När du skalar om bilderna uppdateras förhandsvisningen automatiskt.
             </p>
 
+            <!-- Full Wallet-biljettvy -->
             <div class="preview-grid">
-                <!-- Kupong -->
-                <div class="wallet-preview">
-                    <div class="wallet-inner">
-                        <div class="wallet-top">
-                            <div class="wallet-type-pill">Kupong</div>
-                            <div class="wallet-icon-circle" data-slot="icon">
-                                <span>A</span>
+                <div class="wallet-preview-wrapper">
+                    <div class="wallet-preview-label">Wallet – biljettvy (full vy)</div>
+                    <div class="wallet-preview">
+                        <div class="wallet-inner">
+                            <div class="ticket-header">
+                                <div class="ticket-logo" data-slot="logo"></div>
                             </div>
-                        </div>
-                        <div class="wallet-logo-strip">
-                            <div class="wallet-logo" data-slot="logo"></div>
-                            <div class="wallet-strip"></div>
-                        </div>
-                        <div class="wallet-main">
-                            <div class="wallet-fields">
-                                <div class="wallet-line-strong">20% på utvalt sortiment</div>
-                                <div class="wallet-line-muted">Gäller t.o.m. 31/12 • Butik & online</div>
-                            </div>
-                            <div class="wallet-thumb" data-slot="thumb"></div>
-                        </div>
-                        <div class="wallet-bottom">
-                            <div class="wallet-barcode"></div>
-                            <div class="wallet-chip">Kupong-ID • 123456</div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Eventbiljett -->
-                <div class="wallet-preview" style="background: linear-gradient(135deg,#ec4899,#8b5cf6);">
-                    <div class="wallet-inner">
-                        <div class="wallet-top">
-                            <div class="wallet-type-pill">Eventbiljett</div>
-                            <div class="wallet-icon-circle" data-slot="icon">
-                                <span>A</span>
+                            <div class="ticket-section">
+                                <div class="ticket-label">Event</div>
+                                <div class="ticket-value ticket-value-lg">
+                                    Rockieli-plock
+                                </div>
                             </div>
-                        </div>
-                        <div class="wallet-logo-strip">
-                            <div class="wallet-logo" data-slot="logo"></div>
-                            <div class="wallet-strip"></div>
-                        </div>
-                        <div class="wallet-main">
-                            <div class="wallet-fields">
-                                <div class="wallet-line-strong">Live Session</div>
-                                <div class="wallet-line-muted">Ons 19:30 • Rad 7, plats 12</div>
-                            </div>
-                            <div class="wallet-thumb" data-slot="thumb"></div>
-                        </div>
-                        <div class="wallet-bottom">
-                            <div class="wallet-barcode"></div>
-                            <div class="wallet-chip">Entré • 1 person</div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Generiskt kort -->
-                <div class="wallet-preview" style="background: linear-gradient(135deg,#0f766e,#22c55e);">
-                    <div class="wallet-inner">
-                        <div class="wallet-top">
-                            <div class="wallet-type-pill">Medlemskort</div>
-                            <div class="wallet-icon-circle" data-slot="icon">
-                                <span>A</span>
+                            <div class="ticket-grid">
+                                <div class="ticket-col">
+                                    <div class="ticket-field">
+                                        <div class="ticket-label">Section</div>
+                                        <div class="ticket-value">Första parkett</div>
+                                    </div>
+                                    <div class="ticket-field">
+                                        <div class="ticket-label">Ticket</div>
+                                        <div class="ticket-value">Ordinarie parkett</div>
+                                    </div>
+                                    <div class="ticket-field">
+                                        <div class="ticket-label">Where</div>
+                                        <div class="ticket-value">Stora Scen</div>
+                                    </div>
+                                </div>
+                                <div class="ticket-col">
+                                    <div class="ticket-field">
+                                        <div class="ticket-label">Entry via</div>
+                                        <div class="ticket-value">Höger</div>
+                                    </div>
+                                    <div class="ticket-field">
+                                        <div class="ticket-label">Row</div>
+                                        <div class="ticket-value">13</div>
+                                    </div>
+                                    <div class="ticket-field">
+                                        <div class="ticket-label">Seat</div>
+                                        <div class="ticket-value">1326</div>
+                                    </div>
+                                    <div class="ticket-field">
+                                        <div class="ticket-label">Starts</div>
+                                        <div class="ticket-value">26 sep. 2025 19:30</div>
+                                    </div>
+                                    <div class="ticket-field">
+                                        <div class="ticket-label">Entry</div>
+                                        <div class="ticket-value">18:00</div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="wallet-logo-strip">
-                            <div class="wallet-logo" data-slot="logo"></div>
-                            <div class="wallet-strip"></div>
-                        </div>
-                        <div class="wallet-main">
-                            <div class="wallet-fields">
-                                <div class="wallet-line-strong">August Ekelund</div>
-                                <div class="wallet-line-muted">Medlemsnivå: Pro • Saldo: 450 kr</div>
+
+                            <div class="ticket-qr-area">
+                                <div class="ticket-qr-box"></div>
+                                <div class="ticket-qr-caption">XXXXXXXXX</div>
                             </div>
-                            <div class="wallet-thumb" data-slot="thumb"></div>
-                        </div>
-                        <div class="wallet-bottom">
-                            <div class="wallet-barcode"></div>
-                            <div class="wallet-chip">Visa i kassan</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Extra vyer: listvy, watch, låsskärm -->
+            <!-- Extra vyer: lista, watch, låsskärm -->
             <div class="extra-previews">
+                <!-- Wallet-listvy -->
                 <div>
+                    <div class="mini-caption-title">Wallet – listvy</div>
                     <div class="wallet-listcell">
                         <div class="wallet-list-icon" data-slot="list-icon">A</div>
                         <div>
-                            <div class="wallet-list-text-main">Wallet-listvy</div>
-                            <div class="wallet-list-text-sub">Så här kan det se ut i listan.</div>
+                            <div class="wallet-list-text-main">Rockieli-plock</div>
+                            <div class="wallet-list-text-sub">Eventbyrån • Stora Scen</div>
                         </div>
                     </div>
                     <div class="mini-caption">
-                        Visar hur <code>icon.png</code> kan se ut i själva Wallet-listan bland andra pass.
+                        Visar hur <code>icon.png</code> kan se ut i biljettslistan tillsammans med titel och plats.
                     </div>
                 </div>
 
+                <!-- Apple Watch -->
                 <div>
+                    <div class="mini-caption-title">Apple Watch – biljettvy</div>
                     <div class="watch-preview">
                         <div class="watch-inner">
                             <div class="watch-header">
                                 <div class="watch-icon" data-slot="watch-icon">A</div>
-                                <div>Konsert-pass</div>
+                                <div class="watch-title">Rockieli-plock</div>
                             </div>
                             <div class="watch-logo-strip">
                                 <div class="watch-logo" data-slot="watch-logo"></div>
-                                <div style="flex:1;height:8px;border-radius:999px;background:rgba(15,23,42,0.85);"></div>
+                                <div style="flex:1;height:8px;border-radius:999px;background:#e5e7eb;"></div>
                             </div>
                             <div class="watch-field-line">
-                                <span>Event</span><span>19:30 idag</span>
+                                <span>Starts</span><span>19:30</span>
                             </div>
                             <div class="watch-field-line">
-                                <span>Plats</span><span>Rad 7 • 12</span>
+                                <span>Row</span><span>13</span>
+                            </div>
+                            <div class="watch-field-line">
+                                <span>Seat</span><span>1326</span>
                             </div>
                             <div class="watch-barcode"></div>
                         </div>
                     </div>
                     <div class="mini-caption">
-                        Förenklad vy av hur samma pass kan uppfattas på Apple Watch (logo + icon + fält).
+                        Förenklad Watch-vy där samma logga och ikon används i ett kompakt format.
                     </div>
                 </div>
 
+                <!-- Låsskärm -->
                 <div>
+                    <div class="mini-caption-title">iPhone – låsskärm</div>
                     <div class="lockscreen-phone">
                         <div class="lockscreen-inner">
                             <div>
                                 <div class="lockscreen-statusbar">
-                                    <span>08:41</span><span>🔋 100%</span>
+                                    <span>Fre 26 sep</span><span>🔋 100%</span>
                                 </div>
-                                <div class="lockscreen-time">9:41</div>
+                                <div class="lockscreen-time">19:10</div>
                             </div>
                             <div class="lockscreen-notification">
                                 <div class="lockscreen-icon" data-slot="lockscreen-icon">A</div>
                                 <div>
-                                    <div style="font-size:0.78rem;font-weight:600;">Wallet-pass</div>
-                                    <div style="font-size:0.7rem;color:#9ca3af;">Tryck för att öppna</div>
+                                    <div style="font-size:0.78rem;font-weight:600;">Biljett är relevant</div>
+                                    <div style="font-size:0.7rem;color:#9ca3af;">Rockieli-plock • Stora Scen</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="mini-caption">
-                        En “låtsas-lockscreen” där endast <code>icon.png</code> används – bra för att se hur den funkar pytteliten.
+                        “Låtsas-lockscreen” där du kan se hur <code>icon.png</code> funkar superlitet i en notis.
                     </div>
                 </div>
             </div>
 
             <p class="preview-note">
-                När du exporterar en riktig .pkpass bestämmer layouten i <code>pass.json</code> (pass-stil,
-                fält m.m.) exakt var bilderna hamnar. Det här verktyget fokuserar på bilderna – format, namn
-                och en snabb visuell känsla i flera typiska Wallet-lägen.
+                När du skapar en riktig <code>.pkpass</code> styr <code>pass.json</code> allt (pass-stil, fält, färger).
+                Det här verktyget hjälper dig med bildformat, filnamn och en layout som liknar en eventbiljett
+                i olika vyer.
             </p>
         </section>
     </div>
@@ -1114,7 +1120,7 @@
             downloadLinksEl.appendChild(item);
         }
 
-        // --- Förhandsvisning: uppdatera Wallet-korten + listvy + watch + låsskärm med nya bilder ---
+        // --- Förhandsvisning: uppdatera alla vyer med nya bilder ---
         function updatePreviewFromAsset(key, dataUrl) {
             if (key.startsWith("icon")) {
                 previewState.icon = dataUrl;
@@ -1127,44 +1133,16 @@
         }
 
         function applyPreviewImages() {
-            const iconEls = document.querySelectorAll("[data-slot='icon']");
             const logoEls = document.querySelectorAll("[data-slot='logo']");
-            const thumbEls = document.querySelectorAll("[data-slot='thumb']");
             const listIconEls = document.querySelectorAll("[data-slot='list-icon']");
             const watchIconEls = document.querySelectorAll("[data-slot='watch-icon']");
             const watchLogoEls = document.querySelectorAll("[data-slot='watch-logo']");
             const lockscreenIconEls = document.querySelectorAll("[data-slot='lockscreen-icon']");
 
-            // Wallet-kortens icon
-            iconEls.forEach(el => {
-                if (previewState.icon) {
-                    el.style.backgroundImage = "url(" + previewState.icon + ")";
-                    el.classList.add("has-image");
-                    el.innerHTML = "";
-                } else {
-                    el.style.backgroundImage = "";
-                    el.classList.remove("has-image");
-                    if (!el.querySelector("span")) {
-                        const span = document.createElement("span");
-                        span.textContent = "A";
-                        el.appendChild(span);
-                    }
-                }
-            });
-
-            // Logo i Wallet-korten
+            // Logo i full biljettvy
             logoEls.forEach(el => {
                 if (previewState.logo) {
                     el.style.backgroundImage = "url(" + previewState.logo + ")";
-                } else {
-                    el.style.backgroundImage = "";
-                }
-            });
-
-            // Thumbnail-ruta: använd logga eller icon
-            thumbEls.forEach(el => {
-                if (previewState.logo || previewState.icon) {
-                    el.style.backgroundImage = "url(" + (previewState.logo || previewState.icon) + ")";
                 } else {
                     el.style.backgroundImage = "";
                 }
