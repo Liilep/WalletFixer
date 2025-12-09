@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-E6BYGDHEZ9"></script>
@@ -7,9 +7,9 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-E6BYGDHEZ9');
     </script>
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -17,88 +17,420 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-KKPQ9SDX');</script>
     <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple Wallet Image Resizer</title>
+    <title>August's Wallet Bildverktyg</title>
+
     <style>
-        /* Grundläggande stilar */
+        :root {
+            --blue: #2563eb;
+            --blue-dark: #1d4ed8;
+            --green: #16a34a;
+            --orange: #f97316;
+            --border: #d1d5db;
+            --bg: #f3f4f6;
+            --text: #111827;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f4f5f7;
-            color: #333;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 1.5rem;
+            background: var(--bg);
+            color: var(--text);
         }
+
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
         h1 {
-            color: #2d2d2d;
-            font-size: 32px;
-            margin-bottom: 15px;
+            margin-top: 0;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 0.25rem;
         }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 30px;
+
+        .lead {
+            text-align: center;
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
         }
-        .section-title {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #444;
+
+        .card {
+            background: #fff;
+            padding: 1.5rem 1.75rem;
+            border-radius: 0.9rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
         }
-        input[type="file"], button {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-top: 10px;
-            background-color: #f8f8f8;
-            font-size: 16px;
-            transition: background-color 0.3s;
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
-        input[type="file"]:hover, button:hover {
-            background-color: #e8e8e8;
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.6rem;
+            height: 1.6rem;
+            border-radius: 999px;
+            background: var(--blue);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 700;
         }
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            font-weight: bold;
+
+        .field-group {
+            margin-bottom: 1rem;
         }
-        button:active {
-            background-color: #0056b3;
-        }
+
         label {
             display: block;
-            margin-top: 15px;
-            font-size: 14px;
-            color: #555;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
         }
-        .download-list {
-            margin-top: 20px;
+
+        input[type="file"],
+        input[type="checkbox"] {
+            font-family: inherit;
         }
-        .download-list a {
-            display: inline-block;
-            margin-bottom: 10px;
-            padding: 8px 15px;
-            background-color: #28a745;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.3s;
+
+        input[type="file"] {
+            font-size: 0.9rem;
         }
-        .download-list a:hover {
-            background-color: #218838;
+
+        .help {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.2rem;
         }
-        .checkbox-container {
-            margin: 20px 0;
+
+        .row {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.9rem;
         }
-        .checkbox-container input {
-            margin-left: 10px;
+
+        .row > .col {
+            flex: 1 1 220px;
+            min-width: 0;
+        }
+
+        .checkbox-line {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 999px;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--blue);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37,99,235,0.35);
+            transition: transform 0.05s ease, box-shadow 0.05s ease, background 0.2s;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: default;
+            box-shadow: none;
+        }
+
+        button:not(:disabled):hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(37,99,235,0.45);
+            background: var(--blue-dark);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            box-shadow: 0 4px 12px rgba(55,65,81,0.35);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background: #4b5563;
+        }
+
+        .btn-green {
+            background: var(--green);
+            box-shadow: 0 4px 12px rgba(22,163,74,0.4);
+        }
+        .btn-green:hover:not(:disabled) {
+            background: #15803d;
+        }
+
+        .status {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            min-height: 1.2rem;
+        }
+
+        .status--info {
+            color: #374151;
+        }
+
+        .status--ok {
+            color: #065f46;
+        }
+
+        .status--error {
+            color: #b91c1c;
+        }
+
+        .asset-list {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .asset-item {
+            background: #f9fafb;
+            border-radius: 0.75rem;
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .asset-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .asset-name {
+            font-weight: 600;
+        }
+
+        .asset-size-pill {
+            padding: 0.1rem 0.5rem;
+            border-radius: 999px;
+            background: #e5e7eb;
+            font-size: 0.75rem;
+            color: #4b5563;
+        }
+
+        .asset-actions {
+            margin-top: 0.2rem;
+        }
+
+        .asset-actions a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.3rem 0.85rem;
+            border-radius: 999px;
+            text-decoration: none;
+            background: var(--orange);
+            color: #fff;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 8px rgba(249,115,22,0.4);
+        }
+
+        .asset-actions a:hover {
+            background: #ea580c;
+        }
+
+        /* Wallet previews */
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .wallet-preview {
+            border-radius: 1rem;
+            background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+            padding: 0.65rem 0.75rem 0.9rem;
+            color: #f9fafb;
+            box-shadow: 0 6px 20px rgba(15,23,42,0.35);
+            position: relative;
+            overflow: hidden;
+            font-size: 0.8rem;
+        }
+
+        .wallet-preview::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 50%);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .wallet-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .wallet-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.4rem;
+        }
+
+        .wallet-type-pill {
+            padding: 0.1rem 0.5rem;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.35);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .wallet-icon-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .wallet-icon-circle span {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .wallet-icon-circle.has-image {
+            background-size: cover;
+            background-position: center;
+            background-color: #111827;
+        }
+
+        .wallet-logo-strip {
+            margin-bottom: 0.5rem;
+            border-radius: 0.55rem;
+            background: rgba(15,23,42,0.38);
+            padding: 0.35rem 0.55rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            overflow: hidden;
+        }
+
+        .wallet-logo {
+            width: 90px;
+            height: 28px;
+            border-radius: 0.35rem;
+            background: rgba(15,23,42,0.75);
+            overflow: hidden;
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            flex-shrink: 0;
+        }
+
+        .wallet-strip {
+            flex: 1;
+            height: 26px;
+            border-radius: 0.35rem;
+            background: linear-gradient(90deg, rgba(255,255,255,0.22), rgba(255,255,255,0.05));
+            opacity: 0.9;
+        }
+
+        .wallet-main {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+
+        .wallet-fields {
+            flex: 1;
+        }
+
+        .wallet-line-strong {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .wallet-line-muted {
+            font-size: 0.78rem;
+            opacity: 0.9;
+        }
+
+        .wallet-thumb {
+            width: 42px;
+            height: 42px;
+            border-radius: 0.4rem;
+            background: rgba(15,23,42,0.4);
+            flex-shrink: 0;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .wallet-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.55rem;
+        }
+
+        .wallet-barcode {
+            flex: 1;
+            height: 14px;
+            border-radius: 99px;
+            background-image: repeating-linear-gradient(
+                to right,
+                rgba(15,23,42,0.7) 0,
+                rgba(15,23,42,0.7) 4px,
+                transparent 4px,
+                transparent 7px
+            );
+            opacity: 0.9;
+        }
+
+        .wallet-chip {
+            margin-left: 0.5rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.4);
+            font-size: 0.7rem;
+        }
+
+        .preview-note {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.4rem;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 1.2rem 1.1rem;
+            }
         }
     </style>
 </head>
@@ -108,69 +440,254 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <div class="container">
-        <h1>August's Wallet Bildgenerator</h1>
-        <p>Ladda upp bilder och få dom i rätt format/namn för Walletbiljetter</p>
+    <div class="page">
+        <h1>Augusts Wallet-bildverktyg</h1>
+        <p class="lead">
+            Ladda upp en eller flera bilder och få ut färdiga <strong>icon</strong> &amp; <strong>logo</strong>-filer
+            i rätt storlek/namn – plus en enkel förhandsvisning av hur det kan se ut i Wallet.
+        </p>
 
-        <div class="checkbox-container">
-            <label for="useGlobal">En bild för alla</label>
-            <input type="checkbox" id="useGlobal">
-        </div>
+        <!-- STEG 1: UPPLADDNING & SKALNING -->
+        <section class="card">
+            <h2><span class="badge">1</span> Ladda upp bilder &amp; skala om</h2>
 
-        <div id="globalUpload">
-            <label for="globalFile">En bild för alla:</label>
-            <input type="file" id="globalFile" accept="image/*">
-        </div>
+            <div class="field-group">
+                <label class="checkbox-line">
+                    <input type="checkbox" id="useGlobal" />
+                    En bild för alla storlekar
+                </label>
+                <div class="help">
+                    Bockad = samma original används för alla varianter (icon/logo i alla @-storlekar).<br>
+                    Avbockad = du kan ladda upp egna filer per storlek.
+                </div>
+            </div>
 
-        <div id="individualUploads">
-            <label for="icon">icon.png:</label>
-            <input type="file" class="file-input" data-key="icon" accept="image/*">
-            <label for="icon2x">icon@2x.png:</label>
-            <input type="file" class="file-input" data-key="icon2x" accept="image/*">
-            <label for="icon3x">icon@3x.png:</label>
-            <input type="file" class="file-input" data-key="icon3x" accept="image/*">
-            <label for="logo">logo.png:</label>
-            <input type="file" class="file-input" data-key="logo" accept="image/*">
-            <label for="logo2x">logo@2x.png:</label>
-            <input type="file" class="file-input" data-key="logo2x" accept="image/*">
-            <label for="logo3x">logo@3x.png:</label>
-            <input type="file" class="file-input" data-key="logo3x" accept="image/*">
-        </div>
+            <div id="globalUpload" class="field-group">
+                <label for="globalFile">En bild för alla:</label>
+                <input type="file" id="globalFile" accept="image/*">
+                <div class="help">
+                    Helst en högupplöst kvadratisk bild (t.ex. 1024×1024) med transparens.
+                </div>
+            </div>
 
-        <button onclick="processImages()">Ladda upp & skala om</button>
+            <div id="individualUploads" class="field-group">
+                <div class="row">
+                    <div class="col">
+                        <label>Icon (liten symbol)</label>
+                        <input type="file" class="file-input" data-key="icon" accept="image/*">
+                        <div class="help">icon.png – 29×29 px</div>
+                    </div>
+                    <div class="col">
+                        <label>Icon @2x</label>
+                        <input type="file" class="file-input" data-key="icon2x" accept="image/*">
+                        <div class="help">icon@2x.png – 58×58 px</div>
+                    </div>
+                    <div class="col">
+                        <label>Icon @3x</label>
+                        <input type="file" class="file-input" data-key="icon3x" accept="image/*">
+                        <div class="help">icon@3x.png – 87×87 px</div>
+                    </div>
+                </div>
 
-        <div id="downloadLinks" class="download-list"></div>
+                <div class="row" style="margin-top:0.75rem;">
+                    <div class="col">
+                        <label>Logo (huvudlogotyp)</label>
+                        <input type="file" class="file-input" data-key="logo" accept="image/*">
+                        <div class="help">logo.png – 100×50 px (Apple föreslår 160×50 pt)</div>
+                    </div>
+                    <div class="col">
+                        <label>Logo @2x</label>
+                        <input type="file" class="file-input" data-key="logo2x" accept="image/*">
+                        <div class="help">logo@2x.png – 200×100 px</div>
+                    </div>
+                    <div class="col">
+                        <label>Logo @3x</label>
+                        <input type="file" class="file-input" data-key="logo3x" accept="image/*">
+                        <div class="help">logo@3x.png – 300×150 px</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="row" style="align-items:center;">
+                    <div class="col" style="flex:0 0 auto;">
+                        <button id="processBtn" type="button">Skala om &amp; skapa filer</button>
+                    </div>
+                    <div class="col" style="flex:0 0 auto;">
+                        <button id="resetBtn" type="button" class="btn-secondary">Rensa resultat</button>
+                    </div>
+                </div>
+                <div id="statusText" class="status status--info"></div>
+            </div>
+
+            <div id="downloadLinks" class="asset-list"></div>
+        </section>
+
+        <!-- STEG 2: FÖRHANDSVISNING -->
+        <section class="card">
+            <h2><span class="badge">2</span> Förhandsvisning – ungefär hur det kan se ut</h2>
+            <p class="help">
+                Det här är inte en exakt 1:1-rendering av Wallet, men ger en känsla för hur din
+                <strong>icon</strong> och <strong>logo</strong> hamnar i olika passtyper.
+                När du skalar om bilderna uppdateras förhandsvisningen automatiskt.
+            </p>
+
+            <div class="preview-grid">
+                <!-- Kupong -->
+                <div class="wallet-preview">
+                    <div class="wallet-inner">
+                        <div class="wallet-top">
+                            <div class="wallet-type-pill">Kupong</div>
+                            <div class="wallet-icon-circle" data-slot="icon">
+                                <span>A</span>
+                            </div>
+                        </div>
+                        <div class="wallet-logo-strip">
+                            <div class="wallet-logo" data-slot="logo"></div>
+                            <div class="wallet-strip"></div>
+                        </div>
+                        <div class="wallet-main">
+                            <div class="wallet-fields">
+                                <div class="wallet-line-strong">20% på utvalt sortiment</div>
+                                <div class="wallet-line-muted">Gäller t.o.m. 31/12 • Butik & online</div>
+                            </div>
+                            <div class="wallet-thumb" data-slot="thumb"></div>
+                        </div>
+                        <div class="wallet-bottom">
+                            <div class="wallet-barcode"></div>
+                            <div class="wallet-chip">Kupong-ID • 123456</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eventbiljett -->
+                <div class="wallet-preview" style="background: linear-gradient(135deg,#ec4899,#8b5cf6);">
+                    <div class="wallet-inner">
+                        <div class="wallet-top">
+                            <div class="wallet-type-pill">Eventbiljett</div>
+                            <div class="wallet-icon-circle" data-slot="icon">
+                                <span>A</span>
+                            </div>
+                        </div>
+                        <div class="wallet-logo-strip">
+                            <div class="wallet-logo" data-slot="logo"></div>
+                            <div class="wallet-strip"></div>
+                        </div>
+                        <div class="wallet-main">
+                            <div class="wallet-fields">
+                                <div class="wallet-line-strong">Tickster Live Session</div>
+                                <div class="wallet-line-muted">Ons 19:30 • Rad 7, plats 12</div>
+                            </div>
+                            <div class="wallet-thumb" data-slot="thumb"></div>
+                        </div>
+                        <div class="wallet-bottom">
+                            <div class="wallet-barcode"></div>
+                            <div class="wallet-chip">Entré • 1 person</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generiskt kort -->
+                <div class="wallet-preview" style="background: linear-gradient(135deg,#0f766e,#22c55e);">
+                    <div class="wallet-inner">
+                        <div class="wallet-top">
+                            <div class="wallet-type-pill">Medlemskort</div>
+                            <div class="wallet-icon-circle" data-slot="icon">
+                                <span>A</span>
+                            </div>
+                        </div>
+                        <div class="wallet-logo-strip">
+                            <div class="wallet-logo" data-slot="logo"></div>
+                            <div class="wallet-strip"></div>
+                        </div>
+                        <div class="wallet-main">
+                            <div class="wallet-fields">
+                                <div class="wallet-line-strong">August Ekelund</div>
+                                <div class="wallet-line-muted">Medlemsnivå: Pro • Saldo: 450 kr</div>
+                            </div>
+                            <div class="wallet-thumb" data-slot="thumb"></div>
+                        </div>
+                        <div class="wallet-bottom">
+                            <div class="wallet-barcode"></div>
+                            <div class="wallet-chip">Visa i kassan</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="preview-note">
+                När du exporterar en riktig .pkpass bestämmer layouten i <code>pass.json</code> (pass-stil,
+                fält m.m.) exakt var bilderna hamnar. Det här verktyget fokuserar på bilderna – format, namn
+                och snabb visuell känsla.
+            </p>
+        </section>
     </div>
 
     <script>
+        // --- Storlekar (som i ditt original) ---
         const sizes = [
-            { key: "icon", name: "icon.png", width: 29, height: 29 },
-            { key: "icon2x", name: "icon@2x.png", width: 58, height: 58 },
-            { key: "icon3x", name: "icon@3x.png", width: 87, height: 87 },
-            { key: "logo", name: "logo.png", width: 100, height: 50 },
-            { key: "logo2x", name: "logo@2x.png", width: 200, height: 100 },
-            { key: "logo3x", name: "logo@3x.png", width: 300, height: 150 },
+            { key: "icon",   name: "icon.png",      width: 29,  height: 29 },
+            { key: "icon2x", name: "icon@2x.png",   width: 58,  height: 58 },
+            { key: "icon3x", name: "icon@3x.png",   width: 87,  height: 87 },
+            { key: "logo",   name: "logo.png",      width: 100, height: 50 },
+            { key: "logo2x", name: "logo@2x.png",   width: 200, height: 100 },
+            { key: "logo3x", name: "logo@3x.png",   width: 300, height: 150 },
         ];
 
-        document.getElementById("useGlobal").addEventListener("change", function() {
-            document.getElementById("globalUpload").style.display = this.checked ? "block" : "none";
-            document.getElementById("individualUploads").style.display = this.checked ? "none" : "block";
+        const useGlobalCheckbox = document.getElementById("useGlobal");
+        const globalUpload = document.getElementById("globalUpload");
+        const individualUploads = document.getElementById("individualUploads");
+        const processBtn = document.getElementById("processBtn");
+        const resetBtn = document.getElementById("resetBtn");
+        const statusText = document.getElementById("statusText");
+        const downloadLinksEl = document.getElementById("downloadLinks");
+
+        // Håller senaste bilderna för förhandsvisning
+        const previewState = {
+            icon: null,
+            logo: null
+        };
+
+        function setStatus(message, type = "info") {
+            statusText.textContent = message || "";
+            statusText.className = "status status--" + type;
+        }
+
+        function updateUploadMode() {
+            const useGlobal = useGlobalCheckbox.checked;
+            globalUpload.style.display = useGlobal ? "block" : "none";
+            individualUploads.style.display = useGlobal ? "none" : "block";
+        }
+
+        useGlobalCheckbox.addEventListener("change", updateUploadMode);
+
+        resetBtn.addEventListener("click", () => {
+            downloadLinksEl.innerHTML = "";
+            setStatus("Resultat rensat.", "info");
+
+            // Nollställ preview
+            previewState.icon = null;
+            previewState.logo = null;
+            resetPreviewImages();
         });
 
+        processBtn.addEventListener("click", processImages);
+
         function processImages() {
-            const useGlobal = document.getElementById("useGlobal").checked;
+            const useGlobal = useGlobalCheckbox.checked;
             const globalFile = document.getElementById("globalFile").files[0];
             const files = {};
-
-            // Samla alla uppladdade originalfilnamn
             const uploadedFileNames = [];
 
             if (useGlobal) {
                 if (!globalFile) {
-                    alert("Ladda upp en bild.");
+                    alert("Ladda upp en bild eller avmarkera 'En bild för alla'.");
+                    setStatus("Ingen bild vald.", "error");
                     return;
                 }
-                sizes.forEach(size => files[size.key] = globalFile);
+                sizes.forEach(size => {
+                    files[size.key] = globalFile;
+                });
                 uploadedFileNames.push(globalFile.name);
             } else {
                 document.querySelectorAll(".file-input").forEach(input => {
@@ -179,11 +696,12 @@
                         uploadedFileNames.push(input.files[0].name);
                     }
                 });
-            }
 
-            if (Object.keys(files).length === 0) {
-                alert("Ladda upp minst en bild.");
-                return;
+                if (Object.keys(files).length === 0) {
+                    alert("Ladda upp minst en bild (global eller per storlek).");
+                    setStatus("Inga filer uppladdade.", "error");
+                    return;
+                }
             }
 
             // GTM tracking: fil-UPPLADDNING
@@ -196,16 +714,33 @@
                 });
             }
 
-            document.getElementById("downloadLinks").innerHTML = "";
+            downloadLinksEl.innerHTML = "";
+            setStatus("Skalar om bilder...", "info");
+            processBtn.disabled = true;
+
+            let processedCount = 0;
+            let targetCount = 0;
 
             sizes.forEach(size => {
                 if (files[size.key]) {
-                    resizeImage(files[size.key], size.width, size.height, size.name);
+                    targetCount++;
+                    resizeImage(files[size.key], size, () => {
+                        processedCount++;
+                        if (processedCount === targetCount) {
+                            setStatus("Klar! " + processedCount + " filer skapade.", "ok");
+                            processBtn.disabled = false;
+                        }
+                    });
                 }
             });
+
+            if (targetCount === 0) {
+                setStatus("Inga matchade storlekar hittades för de uppladdade bilderna.", "error");
+                processBtn.disabled = false;
+            }
         }
 
-        function resizeImage(file, width, height, name) {
+        function resizeImage(file, size, onDone) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(e) {
@@ -215,50 +750,151 @@
                     const imgHeight = img.height;
                     let newWidth, newHeight;
 
-                    if (imgWidth / imgHeight > width / height) {
-                        newWidth = width;
-                        newHeight = (imgHeight / imgWidth) * width;
+                    if (imgWidth / imgHeight > size.width / size.height) {
+                        newWidth = size.width;
+                        newHeight = (imgHeight / imgWidth) * size.width;
                     } else {
-                        newHeight = height;
-                        newWidth = (imgWidth / imgHeight) * height;
+                        newHeight = size.height;
+                        newWidth = (imgWidth / imgHeight) * size.height;
                     }
 
                     const canvas = document.createElement("canvas");
-                    canvas.width = width;
-                    canvas.height = height;
+                    canvas.width = size.width;
+                    canvas.height = size.height;
                     const ctx = canvas.getContext("2d");
 
-                    const offsetX = (width - newWidth) / 2;
-                    const offsetY = (height - newHeight) / 2;
+                    const offsetX = (size.width - newWidth) / 2;
+                    const offsetY = (size.height - newHeight) / 2;
 
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
                     ctx.drawImage(img, offsetX, offsetY, newWidth, newHeight);
 
+                    // DataURL för preview
+                    const dataUrl = canvas.toDataURL("image/png");
+                    updatePreviewFromAsset(size.key, dataUrl);
+
+                    // Blob för nedladdning
                     canvas.toBlob(blob => {
                         const url = URL.createObjectURL(blob);
-                        const link = document.createElement("a");
-                        link.href = url;
-                        link.download = name;
-                        link.innerText = name;
+                        addDownloadItem(size, url);
 
-                        // GTM tracking: fil-NEDLADDNING när användaren klickar
-                        link.addEventListener("click", function() {
-                            if (window.dataLayer) {
-                                window.dataLayer.push({
-                                    event: "walletfixer_download",
-                                    file_name: name,
-                                    width: width,
-                                    height: height
-                                });
-                            }
-                        });
+                        // GTM tracking sker vid klick i länken
 
-                        document.getElementById("downloadLinks").appendChild(link);
+                        if (typeof onDone === "function") onDone();
                     }, "image/png");
                 };
                 img.src = e.target.result;
             };
         }
-    </script>
 
+        function addDownloadItem(size, url) {
+            const item = document.createElement("div");
+            item.className = "asset-item";
+
+            const header = document.createElement("div");
+            header.className = "asset-header";
+
+            const nameSpan = document.createElement("span");
+            nameSpan.className = "asset-name";
+            nameSpan.textContent = size.name;
+
+            const pill = document.createElement("span");
+            pill.className = "asset-size-pill";
+            pill.textContent = size.width + " × " + size.height + " px";
+
+            header.appendChild(nameSpan);
+            header.appendChild(pill);
+
+            const actions = document.createElement("div");
+            actions.className = "asset-actions";
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = size.name;
+            link.innerText = "Ladda ner";
+
+            link.addEventListener("click", () => {
+                if (window.dataLayer) {
+                    window.dataLayer.push({
+                        event: "walletfixer_download",
+                        file_name: size.name,
+                        width: size.width,
+                        height: size.height
+                    });
+                }
+            });
+
+            actions.appendChild(link);
+
+            item.appendChild(header);
+            item.appendChild(actions);
+
+            downloadLinksEl.appendChild(item);
+        }
+
+        // --- Förhandsvisning: uppdatera Wallet-korten med nya bilder ---
+        function updatePreviewFromAsset(key, dataUrl) {
+            if (key.startsWith("icon")) {
+                previewState.icon = dataUrl;
+            }
+            if (key.startsWith("logo")) {
+                previewState.logo = dataUrl;
+            }
+
+            applyPreviewImages();
+        }
+
+        function applyPreviewImages() {
+            const iconEls = document.querySelectorAll("[data-slot='icon']");
+            const logoEls = document.querySelectorAll("[data-slot='logo']");
+            const thumbEls = document.querySelectorAll("[data-slot='thumb']");
+
+            iconEls.forEach(el => {
+                if (previewState.icon) {
+                    el.style.backgroundImage = "url(" + previewState.icon + ")";
+                    el.classList.add("has-image");
+                    el.innerHTML = "";
+                } else {
+                    el.style.backgroundImage = "";
+                    el.classList.remove("has-image");
+                    if (!el.querySelector("span")) {
+                        const span = document.createElement("span");
+                        span.textContent = "A";
+                        el.appendChild(span);
+                    }
+                }
+            });
+
+            logoEls.forEach(el => {
+                if (previewState.logo) {
+                    el.style.backgroundImage = "url(" + previewState.logo + ")";
+                } else {
+                    el.style.backgroundImage = "";
+                }
+            });
+
+            // Använd loggan även som "thumbnail" om vi har någon
+            thumbEls.forEach(el => {
+                if (previewState.logo || previewState.icon) {
+                    el.style.backgroundImage = "url(" + (previewState.logo || previewState.icon) + ")";
+                } else {
+                    el.style.backgroundImage = "";
+                }
+            });
+        }
+
+        function resetPreviewImages() {
+            previewState.icon = null;
+            previewState.logo = null;
+            applyPreviewImages();
+        }
+
+        // Init
+        window.addEventListener("DOMContentLoaded", () => {
+            updateUploadMode();
+            setStatus("Redo. Ladda upp en bild och klicka på \"Skala om & skapa filer\".", "info");
+            resetPreviewImages();
+        });
+    </script>
 </body>
 </html>
